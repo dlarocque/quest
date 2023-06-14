@@ -3,6 +3,8 @@
 
 use core::panic::PanicInfo;
 
+static HELLO: &[u8] = b"Hello, world!";
+
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     loop {}
@@ -16,5 +18,14 @@ fn panic(_info: &PanicInfo) -> ! {
 /// overwrites the crt0 entry point.
 #[no_mangle] // Do not mangle the function name, we need it to be _start
 pub extern "C" fn _start() -> ! {
-    loop{} // Diverge, since this is the entry point
+    let vga_buffer = 0xb8000 as *mut u8;
+
+    for (i, &byte) in HELLO.iter().enumerate() {
+        unsafe {
+            *vga_buffer.offset(i as isize * 2) = byte;    // ASCII byte
+            *vga_buffer.offset(i as isize * 2 + 1) = 0xb; // White text color
+        }
+    }
+
+    loop {} // Diverge, since this is the entry point
 }
