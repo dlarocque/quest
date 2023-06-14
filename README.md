@@ -2,7 +2,7 @@
 
 boldly going somewhere many have gone before- and returned.
 
-Quest is (going to be) a minimal hobby x86 operating system kernel written in C.
+Quest is (going to be) a minimal hobby x86 operating system kernel written in Rust.
 
 ## Goals
 
